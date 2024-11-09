@@ -14,6 +14,7 @@ const globalErrorHandler = (
     message: err.message,
     errorStack: config.env === "development" ? err.stack : "",
   });
+  console.log(err)
 };
 
 export default globalErrorHandler;
