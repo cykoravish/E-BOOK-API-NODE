@@ -61,6 +61,7 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
     return next(createHttpError(500, "error while uploading the files."));
   }
 };
+
 const updateBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const { title, genre } = req.body;
@@ -134,4 +135,14 @@ const updateBook = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-export { createBook, updateBook };
+const listBooks = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // ..todo -> add pagination
+    const book = await bookModel.find();
+    res.json(book);
+  } catch (error) {
+    return next(createHttpError(500, "Error while getting books"));
+  }
+};
+
+export { createBook, updateBook, listBooks };
