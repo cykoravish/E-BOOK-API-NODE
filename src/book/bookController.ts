@@ -5,14 +5,14 @@ import path from "node:path";
 import fs from "node:fs";
 import createHttpError from "http-errors";
 import bookModel from "./bookModel";
+import UserModel from "../user/userModel";
 import { AuthRequest } from "../middlewares/authenticate";
 
 const createBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { title, genre } = req.body;
-    const files = req.files as {
-      [fieldname: string]: Express.Multer.File[];
-    };
+    const { title, genre, description } = req.body;
+    const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+    // 'application/pdf'
     const coverImageMimeType = files.coverImage[0].mimetype.split("/").at(-1);
     const fileName = files.coverImage[0].filename;
     const filePath = path.resolve(
@@ -25,16 +25,14 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
       folder: "book-covers",
       format: coverImageMimeType,
     });
-
     const bookFileName = files.file[0].filename;
-    const bookfilePath = path.resolve(
+    const bookFilePath = path.resolve(
       __dirname,
       "../../public/data/uploads",
       bookFileName
     );
-
     const bookFileUploadResult = await cloudinary.uploader.upload(
-      bookfilePath,
+      bookFilePath,
       {
         resource_type: "raw",
         filename_override: bookFileName,
@@ -42,20 +40,19 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
         format: "pdf",
       }
     );
-
     const _req = req as AuthRequest;
     const newBook = await bookModel.create({
       title,
+      description,
       genre,
       author: _req.userId,
       coverImage: uploadResult.secure_url,
       file: bookFileUploadResult.secure_url,
     });
-
-    //delete temperory files in public
+    // Delete temp.files
+    // todo: wrap in try catch...
     await fs.promises.unlink(filePath);
-    await fs.promises.unlink(bookfilePath);
-
+    await fs.promises.unlink(bookFilePath);
     res.status(201).json({ id: newBook._id });
   } catch (error) {
     return next(createHttpError(500, "error while uploading the files."));
@@ -64,7 +61,7 @@ const createBook = async (req: Request, res: Response, next: NextFunction) => {
 
 const updateBook = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const { title, genre } = req.body;
+    const { title, description, genre } = req.body;
     const bookId = req.params.bookId;
 
     const book = await bookModel.findOne({ _id: bookId });
@@ -123,6 +120,7 @@ const updateBook = async (req: Request, res: Response, next: NextFunction) => {
       },
       {
         title: title,
+        description: description,
         genre: genre,
         coverImage: completeCoverImage ? completeCoverImage : book.coverImage,
         file: completeFileName ? completeFileName : book.file,

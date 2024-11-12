@@ -7,8 +7,13 @@ const bookSchema = new mongoose.Schema<Book>(
       type: String,
       required: true,
     },
+    description: {
+      type: String,
+      require: true,
+    },
     author: {
       type: mongoose.Schema.Types.ObjectId,
+      // add ref
       ref: "User",
       required: true,
     },
@@ -18,7 +23,7 @@ const bookSchema = new mongoose.Schema<Book>(
     },
     file: {
       type: String,
-      required: true,
+      requied: true,
     },
     genre: {
       type: String,
