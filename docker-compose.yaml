@@ -9,7 +9,6 @@ services:
             - ~/mongo/data:/data/db
         networks:
             - elib-network
-        restart: always
 
     backendapi:
         image: cykoravish/elib-backend:v2
@@ -21,7 +20,6 @@ services:
         env_file: .env
         depends_on:
             - mongosever
-        restart: always
 
 networks:
     elib-network:
