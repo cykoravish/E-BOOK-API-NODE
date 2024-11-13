@@ -1,16 +1,17 @@
+// eslint-disable-next-line no-undef
 module.exports = {
-  app: [
-    {
-      name: "elib-backend-app",
-      script: "./dist/server.js",
-      instances: "max",
-      exer_mode: "cluster",
-      env: {
-        NODE_ENV: "development",
+  apps: [
+      {
+          name: "elib-backend-app",
+          script: "./dist/server.js",
+          instances: "max",
+          exec_mode: "cluster",
+          env: {
+              NODE_ENV: "development",
+          },
+          env_production: {
+              NODE_ENV: "production",
+          },
       },
-      env_production: {
-        NODE_ENV: "production",
-      },
-    },
   ],
 };

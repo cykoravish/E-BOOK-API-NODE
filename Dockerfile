@@ -21,6 +21,7 @@ COPY package*.json ./
 ENV NODE_ENV=production
 
 RUN npm ci
+#--omit=dev
 
 COPY --from=builder /app/dist ./dist
 
@@ -32,6 +33,6 @@ COPY ecosystem.config.js .
 
 USER node
 
-EXPOSE 5513 
+EXPOSE 5513
 
 CMD ["pm2-runtime", "start", "ecosystem.config.js"]
