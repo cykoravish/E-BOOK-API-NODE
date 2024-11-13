@@ -11,7 +11,7 @@ services:
             - elib-network
 
     backendapi:
-        image: cykoravish/elib-backend:v2
+        image: cykoravish/elib-backend:v3
         container_name: elib-backend-server
         ports:
             - "5513:5513"
