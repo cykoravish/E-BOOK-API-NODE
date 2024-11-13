@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon server.ts",
     "build": "tsc",
-    "docker:publish":"docker build -t cykoravish/elib-backend:v3 --platform linux/amd64 . && docker push cykoravish/elib-backend:v3"
+    "docker:publish":"docker build -t cykoravish/elib-backend:v1 --platform linux/amd64 . && docker push cykoravish/elib-backend:v1"
   },
   "keywords": [
     "rest",

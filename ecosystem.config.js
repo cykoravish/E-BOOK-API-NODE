@@ -4,8 +4,8 @@ module.exports = {
       {
           name: "elib-backend-app",
           script: "./dist/server.js",
-          instances: "max",
-          exec_mode: "cluster",
+          instances: 1,
+          exec_mode: "fork",
           env: {
               NODE_ENV: "development",
           },
