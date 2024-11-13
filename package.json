@@ -4,7 +4,9 @@
   "description": "It's a E-book API's project",
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon server.ts"
+    "dev": "nodemon server.ts",
+    "build": "tsc",
+    "docker:publish":"docker build -t cykoravish/elib-backend:v2 --platform linux/amd64 . && docker push cykoravish/elib-backend:v2"
   },
   "keywords": [
     "rest",
